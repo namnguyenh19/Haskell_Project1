@@ -11,40 +11,40 @@ import System.Environment
 import System.Exit
 import Proj1
 
--- | Compute the correct answer to a guess.  First argument is the 
+-- | Compute the correct answer to a guess.  First argument is the
 --   target, second is the guess.
 response :: [String] -> [String] -> (Int,Int,Int)
 response target guess = (right, rightNote, rightOctave)
   where guess'      = nub guess
         right       = length $ intersect guess' target
         num         = length guess'
-        rightNote   = num - (length $ deleteFirstsBy (eqNth 0) guess' target) 
+        rightNote   = num - (length $ deleteFirstsBy (eqNth 0) guess' target)
                     - right
-        rightOctave = num - (length $ deleteFirstsBy (eqNth 1) guess' target) 
+        rightOctave = num - (length $ deleteFirstsBy (eqNth 1) guess' target)
                     - right
 
 
--- | eqNth n l1 l2 returns True iff element n of l1 is equal to 
+-- | eqNth n l1 l2 returns True iff element n of l1 is equal to
 --   element n of l2.
 eqNth :: Eq a => Int -> [a] -> [a] -> Bool
 eqNth n l1 l2 = (l1 !! n) == (l2 !! n)
 
 
 -- |Returns whether or not the chord passed in is a valid chord.  A
--- chord is valid if it is a list of exactly three valid pitches with 
+-- chord is valid if it is a list of exactly three valid pitches with
 -- no repeats.
 validChord :: [String] -> Bool
 validChord chord =
-  length chord == 3 && nub chord == chord && all validPitch chord 
+  length chord == 3 && nub chord == chord && all validPitch chord
 
-    
+
 -- |Returns whether or not its argument is a valid pitch.  That is, it
 -- is a two-character strings where the first character is between 'A'
 -- and 'G' (upper case) and the second between '1' and '3'.
 validPitch :: String -> Bool
 validPitch note =
-  length note == 2 && 
-  note!!0 `elem` ['A'..'G'] && 
+  length note == 2 &&
+  note!!0 `elem` ['A'..'G'] &&
   note!!1 `elem` ['1'..'3']
 
 
@@ -77,6 +77,7 @@ loop target guess other guesses = do
       putStrLn $ "You got it in " ++ show guesses ++ " guesses!"
       else do
       let (guess',other') = nextGuess (guess,other) answer
+      putStrLn $ "Current game state:" ++ show other'
       loop target guess' other' (guesses+1)
     else do
     putStrLn "Invalid guess"
