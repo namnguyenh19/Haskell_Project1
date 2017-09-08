@@ -77,7 +77,6 @@ loop target guess other guesses = do
       putStrLn $ "You got it in " ++ show guesses ++ " guesses!"
       else do
       let (guess',other') = nextGuess (guess,other) answer
-      putStrLn $ "Current game state:" ++ show other'
       loop target guess' other' (guesses+1)
     else do
     putStrLn "Invalid guess"
